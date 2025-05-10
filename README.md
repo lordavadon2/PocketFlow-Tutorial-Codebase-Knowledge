@@ -84,15 +84,13 @@ This is a tutorial project of [Pocket Flow](https://github.com/The-Pocket/Pocket
    pip install -r requirements.txt
    ```
 
-4. Set up LLM in [`utils/call_llm.py`](./utils/call_llm.py) by providing credentials. By default, you can use the [AI Studio key](https://aistudio.google.com/app/apikey) with this client for Gemini Pro 2.5:
+4. Set up LLM in [`utils/call_llm.py`](./utils/call_llm.py) by providing credentials. The project now uses `litellm` for LLM operations, allowing you to easily switch between different models.
 
-   ```python
-   client = genai.Client(
-     api_key=os.getenv("GEMINI_API_KEY", "your-api_key"),
-   )
-   ```
+   Configure the model and API key using environment variables:
+   - `LLM_MODEL`: Specify the model to use (e.g., "gpt-4o-mini")
+   - `LLM_API_KEY`: Provide your API key for the chosen model
 
-   You can use your own models. We highly recommend the latest models with thinking capabilities (Claude 3.7 with thinking, O1). You can verify that it is correctly set up by running:
+   You can verify that it is correctly set up by running:
    ```bash
    python utils/call_llm.py
    ```

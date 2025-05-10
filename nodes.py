@@ -176,8 +176,13 @@ Format the output as a YAML list of dictionaries:
         response = call_llm(prompt, use_cache=(use_cache and self.cur_retry == 0))  # Use cache only if enabled and not retrying
 
         # --- Validation ---
-        yaml_str = response.strip().split("```yaml")[1].split("```")[0].strip()
-        abstractions = yaml.safe_load(yaml_str)
+        response_lines = response.strip().splitlines()
+        if response_lines and response_lines[0].startswith("```yaml") and "```" in response:
+            yaml_str = "\n".join(response_lines[1:]).split("```")[0].strip()
+            abstractions = yaml.safe_load(yaml_str)
+        else:
+            logger.error(f"Unexpected LLM response format: {response}")
+            raise ValueError("LLM response is not in the expected YAML format")
 
         if not isinstance(abstractions, list):
             raise ValueError("LLM Output is not a list")
