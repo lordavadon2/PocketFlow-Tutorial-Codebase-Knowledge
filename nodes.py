@@ -5,6 +5,22 @@ from pocketflow import Node, BatchNode
 from utils.crawl_github_files import crawl_github_files
 from utils.call_llm import call_llm
 from utils.crawl_local_files import crawl_local_files
+import logging
+
+# Define a logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Create a handler (e.g., StreamHandler) and set the logging level
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+
+# Create a formatter and attach it to the handler
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+# Add the handler to the logger
+logger.addHandler(handler)
 
 
 # Helper to get content for specific file indices
@@ -181,7 +197,8 @@ Format the output as a YAML list of dictionaries:
             yaml_str = "\n".join(response_lines[1:]).split("```")[0].strip()
             abstractions = yaml.safe_load(yaml_str)
         else:
-            logger.error(f"Unexpected LLM response format: {response}")
+            logger.error(f"Unexpected LLM response format. Full response:\n{response}")
+            logger.debug(f"Response lines:\n{response_lines}")
             raise ValueError("LLM response is not in the expected YAML format")
 
         if not isinstance(abstractions, list):
