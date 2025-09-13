@@ -59,7 +59,9 @@ def call_llm(prompt: str, use_cache: bool = True) -> str:
             model=model,
             messages=[{"content": prompt, "role": "user"}],
             api_key=api_key,
-            reasoning_effort="disable"
+            drop_params=True,
+            reasoning_effort="disable",
+            reasoning={"exclude": True}
         )
         response_text = response.choices[0].message.content
     except Exception as e:
