@@ -86,15 +86,41 @@ This is a tutorial project of [Pocket Flow](https://github.com/The-Pocket/Pocket
    pip install -r requirements.txt
    ```
 
-4. Set up LLM in [`utils/call_llm.py`](./utils/call_llm.py) by providing credentials. By default, you can use the [AI Studio key](https://aistudio.google.com/app/apikey) with this client for Gemini Pro 2.5:
+4. Set up LLM by providing credentials in environment variables. This project uses [LiteLLM](https://docs.litellm.ai/docs/) which supports multiple providers (OpenAI, Anthropic, Google Gemini, Azure, and many others).
 
-   ```python
-   client = genai.Client(
-     api_key=os.getenv("GEMINI_API_KEY", "your-api_key"),
-   )
+   Copy `.env.sample` to `.env` and configure your API keys:
+
+   ```bash
+   cp .env.sample .env
    ```
 
-   You can use your own models. We highly recommend the latest models with thinking capabilities (Claude 3.7 with thinking, O1). You can verify that it is correctly set up by running:
+   Edit `.env` file with your preferred provider:
+
+   **For OpenAI:**
+   ```
+   LLM_API_KEY=your-openai-api-key
+   LLM_MODEL=gpt-4o
+   ```
+
+   **For Anthropic:**
+   ```
+   LLM_API_KEY=your-anthropic-api-key
+   LLM_MODEL=claude-3-7-sonnet-20250219
+   ```
+
+   **For Google Gemini:**
+   ```
+   LLM_API_KEY=your-gemini-api-key
+   LLM_MODEL=gemini/gemini-2.0-flash-thinking-exp
+   ```
+
+   **For Azure OpenAI:**
+   ```
+   LLM_API_KEY=your-azure-openai-key
+   LLM_MODEL=azure/your-deployment-name
+   ```
+
+   You can use any model supported by LiteLLM. We highly recommend models with thinking capabilities (Claude 3.7 with thinking, O1, Gemini 2.0 Flash Thinking). You can verify that it is correctly set up by running:
    ```bash
    python utils/call_llm.py
    ```
