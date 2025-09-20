@@ -6,6 +6,8 @@ from flow import create_tutorial_flow
 
 dotenv.load_dotenv()
 
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
+
 # Default file patterns
 DEFAULT_INCLUDE_PATTERNS = {
     "*.py", "*.js", "*.jsx", "*.ts", "*.tsx", "*.go", "*.java", "*.pyi", "*.pyx",
@@ -44,18 +46,15 @@ def main():
 
     args = parser.parse_args()
 
-    if not args.dir:
-        # Get GitHub token from argument or environment variable if using repo
-        github_token = os.environ.get('GITHUB_TOKEN')
-        if not github_token:
-            print("Warning: No GitHub token provided. You might hit rate limits for public repositories.")
+    if not GITHUB_TOKEN:
+        print("Warning: No GitHub token provided. You might hit rate limits for public repositories.")
 
     # Initialize the shared dictionary with inputs
     shared = {
         "repo_url": args.repo,
         "local_dir": args.dir,
         "project_name": args.name, # Can be None, FetchRepo will derive it
-        "github_token": github_token,
+        "github_token": GITHUB_TOKEN,
         "output_dir": args.output, # Base directory for CombineTutorial output
 
         # Add include/exclude patterns and max file size
